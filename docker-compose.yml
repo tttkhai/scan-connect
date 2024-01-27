@@ -5,27 +5,6 @@ networks:
     driver: bridge
 
 services:
-  # nest-api:
-  #   container_name: scan-connect
-  #   networks:
-  #     - common-network
-  #   restart: always
-  #   build: .
-  #   ports:
-  #     - "3001:3001"
-  #   depends_on:
-  #     - db
-  #   volumes:
-  #     - .:/src
-  #   environment:
-  #     - POSTGRES_HOST=host.docker.internal
-  #     - POSTGRES_PORT=5432
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=postgres
-  #     - NODE_ENV=local
-  #     - JWT_SECRET=secret
-
   db:
     image: "postgres:14"
     networks:
