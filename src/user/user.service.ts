@@ -5,6 +5,7 @@ import { generateQrCode } from 'src/qr-code/qr-code.helper';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import { ProfileDTO } from 'src/dto/profile.dto';
 
 @Injectable()
 export class UserService {
@@ -32,12 +33,26 @@ export class UserService {
     return this.repo.findOne({ where: { id } });
   }
 
-  async findUserProfile(id: string): Promise<UserEntity> {
+  async findUserProfile(id: string): Promise<UserEntity | ProfileDTO> {
     const profile = await this.repo.findOne({ where: { id } });
     if (!profile.isPrivate) {
       return profile;
     }
 
-    return profile;
+    return this.repo.findOne({
+      where: { id },
+      select: {
+        firstName: true,
+        lastName: true,
+        gender: true,
+        birthday: true,
+        email: true,
+        phone: true,
+        website: true,
+        title: true,
+        qrPath: true,
+        avatarPath: true,
+      },
+    });
   }
 }
