@@ -32,7 +32,7 @@ export class UserEntity {
   @Column({ name: 'created_date', type: 'timestamptz', default: () => 'NOW()' })
   createdDate: Date;
 
-  @Column({ name: 'updated_date', type: 'timestamptz', })
+  @Column({ name: 'updated_date', type: 'timestamptz' })
   updatedDate: Date;
 
   @Column({ name: 'link_id' })

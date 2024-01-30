@@ -15,12 +15,12 @@ export class UserController {
   }
 
   @Get('/user/:id')
-  getUser(): Promise<UserEntity> {
-    return;
+  getUser(id: string): Promise<UserEntity> {
+    return this.userService.findUser(id);
   }
 
   @Get('/profile/:id')
-  getUserProfile(): Promise<UserEntity | ProfileDTO> {
-    return;
+  getUserProfile(id: string): Promise<UserEntity | ProfileDTO> {
+    return this.userService.findUserProfile(id);
   }
 }
