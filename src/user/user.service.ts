@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from 'src/dto/create-user.dto';
-import { generateQrCode } from 'src/qr-code/qr-code.helper';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { ProfileDTO } from 'src/dto/profile.dto';
+import { QrCodeService } from 'src/qr-code/qr-code.service';
 
 @Injectable()
 export class UserService {
@@ -13,13 +12,14 @@ export class UserService {
   constructor(
     repo: Repository<UserEntity>,
     private readonly configService: ConfigService,
+    private readonly qrCodeService: QrCodeService,
   ) {
     this.repo = repo;
   }
 
   async createUser(body: CreateUserDto): Promise<UserEntity> {
     const newUser = await this.repo.create(body);
-    // newUser.qrPath = await generateQrCode(
+    // newUser.qrPath = await this.qrCodeService.generateQrCode(
     //   this.configService.get<string>('SHORT_URL'),
     //   { id: newUser.id, name: newUser.firstName },
     // );

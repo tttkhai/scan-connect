@@ -5,6 +5,8 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { QrCodeService } from './qr-code/qr-code.service';
+import { AwsS3Service } from './aws-s3/aws-s3.service';
 
 @Module({
   imports: [
@@ -18,6 +20,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  providers: [AppService, UserService, QrCodeService, AwsS3Service],
 })
 export class AppModule {}
