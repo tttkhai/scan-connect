@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { QrCodeService } from './qr-code/qr-code.service';
 import { AwsS3Service } from './aws-s3/aws-s3.service';
+import { AwsCognitoService } from './aws-cognito/cognito-guard.service';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { AwsS3Service } from './aws-s3/aws-s3.service';
     }),
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService, QrCodeService, AwsS3Service],
+  providers: [AppService, UserService, QrCodeService, AwsS3Service, AwsCognitoService],
 })
 export class AppModule {}

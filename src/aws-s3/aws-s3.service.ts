@@ -4,7 +4,11 @@ import { ContentType } from 'src/qr-code/qr-code.interface';
 
 @Injectable()
 export class AwsS3Service {
-  constructor(private readonly s3: S3Client) {}
+  private readonly s3: S3Client;
+
+  constructor() {
+    this.s3 = new S3Client({});
+  }
 
   uploadToS3 = async (
     buffer: Buffer,
