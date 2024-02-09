@@ -9,7 +9,7 @@ import { QRQueryParam, QrMetadata } from './qr-code.interface';
 export class QrCodeService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly s3: AwsS3Service,
+    private readonly awsS3Service: AwsS3Service,
   ) {}
 
   makeUrl = (baseUrl: string, queryParams: QRQueryParam): string => {
@@ -28,14 +28,23 @@ export class QrCodeService {
   };
 
   generateQrCode = async (
-    baseUrl,
+    baseUrl: string,
     qrMetadata: QrMetadata,
     queryParameters: QRQueryParam,
   ): Promise<string> => {
-    const qrCodeBuffer = this.createQrCodeBuffer(baseUrl, queryParameters);
-    this.uploadQrCodeToS3(qrCodeBuffer, qrMetadata);
+    const qrCodeBuffer = await this.createQrCodeBuffer(
+      baseUrl,
+      queryParameters,
+    );
 
-    return 'fdsf';
+    await this.awsS3Service.uploadToS3(
+      qrCodeBuffer,
+      qrMetadata.bucket,
+      qrMetadata.fileStorageLocation,
+      'image/png',
+    );
+
+    return `https://${qrMetadata.bucket}/${qrMetadata.fileStorageLocation}`;
   };
 
   /**
@@ -50,19 +59,7 @@ export class QrCodeService {
         width: DEFAULT_QR_WIDTH,
       });
     } catch (e) {
-      console.log('error: ', e);
+      console.error('error: ', e);
     }
-  };
-
-  uploadQrCodeToS3 = async (
-    qrMetadata: QRQueryParam,
-    qrBuffer: Buffer,
-  ): Promise<string> => {
-    return await this.s3.uploadToS3(
-      qrBuffer,
-      qrMetadata.bucket,
-      qrMetadata.fileStorageLocation,
-      'image/png',
-    );
   };
 }

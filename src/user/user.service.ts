@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { ProfileDTO } from 'src/dto/profile.dto';
 import { QrCodeService } from 'src/qr-code/qr-code.service';
+import { getBucketName, getQrFolder } from 'src/app.constant';
 
 @Injectable()
 export class UserService {
@@ -21,9 +22,16 @@ export class UserService {
     const newUser = await this.repo.create(body);
     newUser.qrPath = await this.qrCodeService.generateQrCode(
       this.configService.get<string>('SHORT_URL'),
-      { bucket: 'fdfa', fileStorageLocation: 'fdfdas' },
+      {
+        bucket: getBucketName(),
+        fileStorageLocation: `${getQrFolder()}/
+        ${body.firstName}-
+        ${body.lastName}-
+        ${Date.now()}.png`,
+      },
       { id: newUser.id, name: newUser.firstName },
     );
+
     this.repo.save(newUser);
     console.log(`newUser ${JSON.stringify(newUser)}`);
 
