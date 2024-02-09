@@ -19,10 +19,11 @@ export class UserService {
 
   async createUser(body: CreateUserDto): Promise<UserEntity> {
     const newUser = await this.repo.create(body);
-    // newUser.qrPath = await this.qrCodeService.generateQrCode(
-    //   this.configService.get<string>('SHORT_URL'),
-    //   { id: newUser.id, name: newUser.firstName },
-    // );
+    newUser.qrPath = await this.qrCodeService.generateQrCode(
+      this.configService.get<string>('SHORT_URL'),
+      { bucket: 'fdfa', fileStorageLocation: 'fdfdas' },
+      { id: newUser.id, name: newUser.firstName },
+    );
     this.repo.save(newUser);
     console.log(`newUser ${JSON.stringify(newUser)}`);
 

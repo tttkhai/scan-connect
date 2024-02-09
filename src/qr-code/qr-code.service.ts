@@ -3,10 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as qr from 'qrcode';
 import { DEFAULT_QR_WIDTH } from 'src/app.constant';
 import { AwsS3Service } from 'src/aws-s3/aws-s3.service';
-
-interface QRQueryParam {
-  [key: string]: string;
-}
+import { QRQueryParam, QrMetadata } from './qr-code.interface';
 
 @Injectable()
 export class QrCodeService {
@@ -29,9 +26,16 @@ export class QrCodeService {
 
     return baseUrl;
   };
-  generateQrCode = async () => {
-    const qrCodeBuffer = createQrCodeBuffer();
-    this.uploadQrCodeToS3(qrCodeBuffer);
+
+  generateQrCode = async (
+    baseUrl,
+    qrMetadata: QrMetadata,
+    queryParameters: QRQueryParam,
+  ): Promise<string> => {
+    const qrCodeBuffer = this.createQrCodeBuffer(baseUrl, queryParameters);
+    this.uploadQrCodeToS3(qrCodeBuffer, qrMetadata);
+
+    return 'fdsf';
   };
 
   /**
@@ -40,7 +44,7 @@ export class QrCodeService {
   createQrCodeBuffer = async (
     baseUrl: string,
     queryParameters: QRQueryParam,
-  ) => {
+  ): Promise<Buffer> => {
     try {
       return await qr.toBuffer(this.makeUrl(baseUrl, queryParameters), {
         width: DEFAULT_QR_WIDTH,
@@ -50,17 +54,13 @@ export class QrCodeService {
     }
   };
 
-  uploadQrCodeToS3 = async (qrMetadata: QRMetadata): Promise<void> => {
-    const params = {};
-
-    const buffer = await this.createQrCodeBuffer(
-      this.configService.get<string>('SHORT_URL'),
-      params,
-    );
-
-    await this.s3.uploadToS3(
-      buffer,
-      this.configService.get<string>('RAW_BUCKET_NAME'),
+  uploadQrCodeToS3 = async (
+    qrMetadata: QRQueryParam,
+    qrBuffer: Buffer,
+  ): Promise<string> => {
+    return await this.s3.uploadToS3(
+      qrBuffer,
+      qrMetadata.bucket,
       qrMetadata.fileStorageLocation,
       'image/png',
     );
