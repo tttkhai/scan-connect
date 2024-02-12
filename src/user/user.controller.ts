@@ -5,10 +5,15 @@ import { UserService } from './user.service';
 import { ProfileDTO } from 'src/dto/profile.dto';
 import { CognitoGuard } from 'src/aws-cognito/cognito-guard.service';
 import { CurrentUser } from './user';
+import { AwsS3Service } from 'src/aws-s3/aws-s3.service';
+import { getBucketName, getQrFolder } from 'src/app.constant';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly awsS3Service: AwsS3Service,
+  ) {}
 
   @Post('/signup')
   signUp(@Body() body: CreateUserDto): Promise<UserEntity> {
@@ -25,5 +30,10 @@ export class UserController {
   @Get('/profile/:id')
   getUserProfile(id: string): Promise<UserEntity | ProfileDTO> {
     return this.userService.findUserProfile(id);
+  }
+
+  @Post('/upload')
+  upload() {
+    this.awsS3Service.generatePresignedUrl(getBucketName(), getQrFolder());
   }
 }

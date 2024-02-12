@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as qr from 'qrcode';
-import { DEFAULT_QR_WIDTH } from 'src/app.constant';
+import { DEFAULT_IMAGE_CONTENT_TYPE, DEFAULT_QR_WIDTH } from 'src/app.constant';
 import { AwsS3Service } from 'src/aws-s3/aws-s3.service';
 import { QRQueryParam, QrMetadata } from './qr-code.interface';
 
@@ -41,7 +41,7 @@ export class QrCodeService {
       qrCodeBuffer,
       qrMetadata.bucket,
       qrMetadata.fileStorageLocation,
-      'image/png',
+      DEFAULT_IMAGE_CONTENT_TYPE,
     );
 
     return `https://${qrMetadata.bucket}/${qrMetadata.fileStorageLocation}`;
