@@ -14,7 +14,7 @@ export class UserEntity {
   @Column({ default: '', length: 50, nullable: false })
   gender: string;
 
-  @Column({ default: '', type: 'timestamptz', nullable: false })
+  @Column({ type: 'timestamptz', nullable: false })
   birthday: Date;
 
   @Column({ default: '', length: 50, nullable: false })
@@ -29,7 +29,7 @@ export class UserEntity {
   @Column({ default: '', length: 50 })
   title: string;
 
-  @Column({ name: 'created_date', type: 'timestamptz', default: () => 'NOW()' })
+  @Column({ name: 'created_date', type: 'timestamptz' })
   createdDate: Date;
 
   @Column({ name: 'updated_date', type: 'timestamptz' })

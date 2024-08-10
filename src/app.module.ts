@@ -4,23 +4,28 @@ import { AppService } from './app.service';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { QrCodeService } from './qr-code/qr-code.service';
 import { AwsS3Service } from './aws-s3/aws-s3.service';
-import { AwsCognitoService } from './aws-cognito/cognito-guard.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseConfig } from "./config";
+// import { AwsCognitoService } from './aws-cognito/cognito-guard.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      cache: true,
+      load: [DatabaseConfig],
     }),
     TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        ...configService.get('database'),
+      }),
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) =>
-        configService.get('typeorm'),
     }),
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService, QrCodeService, AwsS3Service, AwsCognitoService],
+  providers: [AppService], // , UserService, QrCodeService, AwsS3Service
 })
 export class AppModule {}

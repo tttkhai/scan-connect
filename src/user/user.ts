@@ -1,5 +1,4 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
-import { User } from '@user/user.types';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 
 let verifier = null;

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from 'src/dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { ProfileDTO } from 'src/dto/profile.dto';
 import { QrCodeService } from 'src/qr-code/qr-code.service';
 import { getBucketName, getQrFolder } from 'src/app.constant';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { ProfileDTO } from './dto/profile.dto';
 
 @Injectable()
 export class UserService {
@@ -18,8 +18,8 @@ export class UserService {
     this.repo = repo;
   }
 
-  async createUser(body: CreateUserDto): Promise<UserEntity> {
-    const newUser = await this.repo.create(body);
+  async createUser(body: CreateUserDTO): Promise<UserEntity> {
+    const newUser = this.repo.create(body);
     newUser.qrPath = await this.qrCodeService.generateQrCode(
       this.configService.get<string>('SHORT_URL'),
       {
