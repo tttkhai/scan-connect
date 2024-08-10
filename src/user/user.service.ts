@@ -6,11 +6,13 @@ import { QrCodeService } from 'src/qr-code/qr-code.service';
 import { getBucketName, getQrFolder } from 'src/app.constant';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { ProfileDTO } from './dto/profile.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
   repo: Repository<UserEntity>;
   constructor(
+    @InjectRepository(UserEntity)
     repo: Repository<UserEntity>,
     private readonly configService: ConfigService,
     private readonly qrCodeService: QrCodeService,
