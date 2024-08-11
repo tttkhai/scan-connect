@@ -9,7 +9,9 @@ import { AwsS3Service } from './aws-s3/aws-s3.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from "./config";
 import { UserModule } from './user/user.module';
-// import { AwsCognitoService } from './aws-cognito/cognito-guard.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,8 +28,9 @@ import { UserModule } from './user/user.module';
       inject: [ConfigService],
     }),
     UserModule,
+    AuthModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, AwsS3Service], // , UserService, QrCodeService, AwsS3Service
+  controllers: [AppController, UserController, AuthController],
+  providers: [AppService, AwsS3Service, AuthService], // , UserService, QrCodeService, AwsS3Service
 })
 export class AppModule {}

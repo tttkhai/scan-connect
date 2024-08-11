@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
-import { CognitoGuard } from 'src/aws-cognito/cognito-guard.service';
-import { CurrentUser } from './user';
 import { AwsS3Service } from 'src/aws-s3/aws-s3.service';
 import { getBucketName, getQrFolder } from 'src/app.constant';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -21,11 +19,11 @@ export class UserController {
     return newUser;
   }
 
-  @Get('/user/:id')
-  @UseGuards(CognitoGuard)
-  getUser(id: string, @CurrentUser() currentUser): Promise<UserEntity> {
-    return this.userService.findUser(id);
-  }
+  // @Get('/user/:id')
+  // @UseGuards(CognitoGuard)
+  // getUser(id: string, @CurrentUser() currentUser): Promise<UserEntity> {
+  //   return this.userService.findUser(id);
+  // }
 
   @Get('/profile/:id')
   getUserProfile(id: string): Promise<UserEntity | ProfileDTO> {

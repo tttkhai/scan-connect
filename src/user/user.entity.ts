@@ -1,3 +1,13 @@
+import { Type } from "class-transformer";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsPhoneNumber,
+  IsString,
+  Matches,
+  MinLength,
+} from "class-validator";
+import { LoginTypes } from "src/type/login-type.enum";
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
@@ -18,13 +28,32 @@ export class UserEntity {
   birthday: Date;
 
   @Column({ default: '', length: 50, nullable: false })
+  @IsEmail()
   email: string;
 
+  @IsString()
+  @MinLength(8)
+  @Matches(/[a-z]/)
+  @Matches(/[A-Z]/)
+  @Matches(/[0-9]/)
+  @IsNotEmpty()
+  password: string
+
+  @Column({
+    type: 'enum',
+    enum: LoginTypes,
+  })
+  loginType: string
+
   @Column({ default: '', length: 15 })
+  @IsPhoneNumber()
   phone: string;
 
   @Column({ default: '', length: 50 })
   website: string;
+
+  @Column({ default: '', length: 50 })
+  bio: string;
 
   @Column({ default: '', length: 50 })
   title: string;
