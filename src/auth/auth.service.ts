@@ -10,12 +10,12 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, DataSource } from "typeorm";
 import { AuthenticateUserDto } from "./dto/authenticate-user.dto";
 import { CognitoIdentityServiceProvider } from "aws-sdk";
-import { User } from "../type/user.type";
-import { Role } from "../type/role.enum";
-import { LoginTypes } from "src/type/login-type.enum";
+import { User } from "./type/user.type";
+import { Role } from "./type/role.enum";
+import { LoginTypes } from "src/auth/type/login-type.enum";
 // import { UserEntity } from "src/entities/user.entity";
 import { RegisterUserDto } from "./dto/register-user.dto";
-import { GoogleUser } from "../type/google-user.type";
+import { GoogleUser } from "./type/google-user.type";
 import { generatePassword } from "src/utils/password-generator";
 import SimpleCrypto from "simple-crypto-js";
 import axios from "axios";
@@ -35,8 +35,8 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly dataSource: DataSource
   ) {
-    this.clientID = this.configService.get("AWS_CLIENT_ID");
-    this.userPoolId = this.configService.get("AWS_USER_POOL_ID");
+    this.clientID = this.configService.get("AWS_COGNITO_CLIENT_ID");
+    this.userPoolId = this.configService.get("AWS_COGNITO_USER_POOL_ID");
     this.userPool = new CognitoUserPool({
       UserPoolId: this.userPoolId,
       ClientId: this.clientID,

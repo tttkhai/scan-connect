@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { passportJwtSecret } from "jwks-rsa";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { UserPayload } from "../../type/user-payload.type";
+import { UserPayload } from "../type/user-payload.type";
 import { AuthService } from "../auth.service";
 import { cookieExtractor } from "./cookieExtractor";
 import { ConfigService } from "@nestjs/config";

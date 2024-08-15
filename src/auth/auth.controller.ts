@@ -14,9 +14,9 @@ import {
   import { AuthenticateUserDto } from "./dto/authenticate-user.dto";
   import { Response, Request } from "express";
   import { CongnitoAuthGuard } from "./guards/cognito.guard";
-  import { User } from "../type/user.type";
+  import { User } from "./type/user.type";
   import { Roles } from "./guards/roleGuard/roles.decorator";
-  import { Role } from "../type/role.enum";
+  import { Role } from "./type/role.enum";
   import { RolesGuard } from "./guards/roleGuard/roles.guard";
   import { RegisterUserDto } from "./dto/register-user.dto";
   import { CognitoUser } from "amazon-cognito-identity-js";

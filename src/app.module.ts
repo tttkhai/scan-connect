@@ -12,9 +12,11 @@ import { UserModule } from './user/user.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+import { UserEntity } from './user/user.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([UserEntity]),
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
