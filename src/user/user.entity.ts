@@ -7,7 +7,7 @@ import {
   Matches,
   MinLength,
 } from "class-validator";
-import { LoginTypes } from "src/auth/type/login-type.enum";
+import { LoginTypes } from "../auth/type/login-type.enum";
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
